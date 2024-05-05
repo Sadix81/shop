@@ -1,0 +1,16 @@
+{
+    "Admin": true,
+    "Category": true,
+    "Product": true,
+    "Gallery": true,
+    "Comment": true,
+    "Site": true,
+    "Dashboard": true,
+    "Filemanager": true,
+    "Otp": true,
+    "Profile": true,
+    "Customer": true,
+    "AdminPanel": true,
+    "CustomerPanel": true,
+    "Favourite": true
+}
