@@ -57,10 +57,11 @@ class AuthRepository implements AuthRepositoryInterface
     public function logout()
     {
         try {
-            $user = Auth::User();
+            $user = Auth::user();
             $user->token()->revoke();
-        } catch (\Throwable $th) {
+                } catch (\Throwable $th) {
             return $th;
         }
     }
+
 }
