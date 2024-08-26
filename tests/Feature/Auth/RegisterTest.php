@@ -11,9 +11,9 @@ class RegisterTest extends TestCase
     {
         $userData = [
             'fullname' => 'sadra-Zargari',
-            'username' => 'sadra-Zargarii',
+            'username' => 'sadra-Zargariiuuuu',
             'password' => 'Sadr@209111',
-            'mobile' => '09117322373',
+            'mobile' => '09117322388',
         ];
     
         $response = $this->postJson('api/auth/user/register', $userData);
