@@ -6,12 +6,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProductIndex extends TestCase
+class ProductIndexTest extends TestCase
 {
     protected $token;
     public function setup(): void
     {
-        parent::setup();
+        parent::setUp();    
         $loginResponse = $this->postJson('api/auth/user/login', [
             'username' => 'sadra-Zargarii',
             'password' => 'Sadr@209111',

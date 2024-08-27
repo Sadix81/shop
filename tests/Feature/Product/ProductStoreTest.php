@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProductStore extends TestCase
+class ProductStoreTest extends TestCase
 {
     protected $token;
     protected function setUp(): void
@@ -19,7 +19,7 @@ class ProductStore extends TestCase
         ]);
 
         // Store the token for later use
-        $this->token = $loginResponse->json('__token__'); // Adjust based on your actual token key
+        $this->token = $loginResponse->json('__token__');
     }
 
     public function test_product_store(): void
