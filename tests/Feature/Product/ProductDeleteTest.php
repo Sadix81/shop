@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Product;
 
+use App\Models\Product\Product;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProductIndexTest extends TestCase
+class ProductDeleteTest extends TestCase
 {
     protected $token;
     public function setup(): void
@@ -19,12 +21,17 @@ class ProductIndexTest extends TestCase
         $this->token = $loginResponse->json('__token__');
     }
 
-    public function test_product_index()
+    public function test_product_delete()
     {
-        parent::setup();
+        $product = Product::latest()->first();
+        $this->assertNotNull($product);
+    
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->get('api/product/index');
+        ])->delete('api/product/delete/' . $product->id);
+    
         $response->assertStatus(200);
+        $this->assertDatabaseMissing('products', ['id' => $product->id]);
+        $this->assertDatabaseCount('products', 3);
     }
 }

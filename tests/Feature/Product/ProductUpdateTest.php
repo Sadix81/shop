@@ -9,8 +9,8 @@ use Tests\TestCase;
 class ProductUpdateTest extends TestCase
 {
     protected $token;
-    public function setup() : void
-     {
+    public function setup(): void
+    {
         parent::setUp();
         $loginResponse = $this->postJson('api/auth/user/login', [
             'username' => 'sadra-Zargarii',
@@ -32,9 +32,10 @@ class ProductUpdateTest extends TestCase
             'is_sale' => 222222,
             'count' => 2222,
         ];
-        $response = $this->put('api/product/update/' . $product->id, $data ,[
+        
+        $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ]); 
+        ])->put('api/product/update/' . $product->id, $data);
 
         $response->assertStatus(200);
     }

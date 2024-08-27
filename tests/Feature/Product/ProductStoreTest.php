@@ -35,8 +35,9 @@ class ProductStoreTest extends TestCase
             'count' => 1212,
         ];
         // Send the request to store the product with the token in the authorization header
-        $response = $this->postJson('api/product/store', $data,
-         ['Authorization' => 'Bearer ' . $this->token,]);
+         $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->postJson('api/product/store', $data);
         $response->assertStatus(201);
     }
 }
