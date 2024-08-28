@@ -2,26 +2,32 @@
 
 namespace Tests\Feature\Product;
 
+use App\Models\Product\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProductIndex extends TestCase
+class ProductShowTest extends TestCase
 {
     protected $token;
-    public function setup(): void
+    public function setUp(): void
     {
-        parent::setup();
+        parent::setUp();
         $loginResponse = $this->postJson('api/auth/user/login', [
             'username' => 'sadra-Zargarii',
             'password' => 'Sadr@209111',
         ]);
         $this->token = $loginResponse->json('__token__');
     }
+    public function test_product_show(): void
+    {
+        $product = Product::latest()->first();
+        $this->assertNotNull($product);
 
-    public function test_product_index(){
-        parent::setup();
-        $response = $this->get('api/product/index' , ['Authorization' => 'Bearer ' . $this->token,]);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->get('api/product/show/' . $product->id);
+
         $response->assertStatus(200);
     }
 }
