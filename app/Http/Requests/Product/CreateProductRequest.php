@@ -12,6 +12,7 @@ class CreateProductRequest extends FormRequest
             'name' => ['required' , 'string' , 'max:100'],
             'status' => ['required' , 'integer' , 'in:0,1'],
             'price' => ['required' , 'numeric'],
+            'owner_id' => ['nullable',  'exists:App\Models\User\User,id', 'numeric'],
             'details' =>['nullable' , 'string' , 'max:500'],
             'color' => ['nullable' , 'string'],
             'image' => ['nullable'],
