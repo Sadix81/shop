@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('status');
             $table->string('price');
+            $table->string('owner_id')->nullable();
             $table->text('details')->nullable();
             $table->string('color')->nullable();
             $table->string('image')->nullable();
