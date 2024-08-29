@@ -11,6 +11,7 @@ Route::prefix('auth/user')->group(function(){
         Route::post('/logout' , [AuthController::class , 'logout']);
         Route::get('/get/user' , [AuthController::class , 'getUser']);
     });
+    //sdfsdf
 });
 
 Route::prefix('product/')->middleware('auth:api')->group(function(){
