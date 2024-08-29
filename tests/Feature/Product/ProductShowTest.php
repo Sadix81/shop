@@ -27,6 +27,7 @@ class ProductShowTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
         ])->get('api/product/show/' . $product->id);
+        //asdas
 
         $response->assertStatus(200);
     }
