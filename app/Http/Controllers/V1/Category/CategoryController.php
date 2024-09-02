@@ -13,8 +13,7 @@ class CategoryController extends Controller
 {
     private $categoryrepo;
 
-    public function __construct(CategoryRepository $categoryrepository)
-    {
+    public function __construct(CategoryRepository $categoryrepository){
         $this->categoryrepo = $categoryrepository;
     }
 
@@ -22,9 +21,11 @@ class CategoryController extends Controller
         return $this->categoryrepo->index();
     }
 
+
     public function store(CreateCategoryRequest $request){
-        $user = Auth::user();
-        if(! $user){
+        $user = Auth::id();
+
+        if($user !== 1){
             return 'عدم دسترسی';
         }
         
@@ -35,6 +36,7 @@ class CategoryController extends Controller
         return response()->json(['message' => __('category.create,failed')] , 500);
     }
 
+
     public function show(Category $category){
         $show_category = Category::find($category);
         if(! $show_category){
@@ -43,9 +45,11 @@ class CategoryController extends Controller
         return $show_category;
     }
 
+
     public function update(Category $category , UpdateCategoryRequest $request){
-        $user = Auth::user();
-        if(! $user){
+        $user = Auth::id();
+
+        if($user !== 1){
             return 'عدم دسترسی';
         }
 
@@ -56,9 +60,11 @@ class CategoryController extends Controller
         return response()->json(['message' => __('category.update,failed')] , 500);
     }
 
+
     public function destroy(Category $category){
-        $user = Auth::user();
-        if(! $user){
+        $user = Auth::id();
+
+        if($user !== 1){
             return 'عدم دسترسی';
         }
         
