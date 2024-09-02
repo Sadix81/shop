@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Passport::routes();
+        $env = (int)env('SESSION_LIFETIME' , 15);
+        Passport::personalAccessTokensExpireIn(now()->addDays($env));
     }
 }
