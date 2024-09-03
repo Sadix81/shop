@@ -27,8 +27,16 @@ class ProductController extends Controller
     public function store(CreateProductRequest $request){
         $user = Auth::user();
         if(! $user){
-            return 'عدم دسترسی';
+            return '.عدم دسترسی';
         }
+        if(! $request->is_sale && ($request->discount > 0)){
+            return '.محصول شامل تخفیف نمیباشد';
+        }
+
+        if($request->discount > $request->price){
+            return '.مبلغ وارد شده کمتر از تخفیف است';
+        }
+
         $error = $this->productRepo->store($request);
         if ($error === null){
             return response()->json(['message' => __('product.create,success')] , 201);
@@ -39,7 +47,7 @@ class ProductController extends Controller
     public function show(Product $product){
         $show_product = Product::find($product);
         if(! $show_product){
-            return 'موردی یافت نشد';
+            return '.موردی یافت نشد';
         }
         return $show_product;
     }
@@ -47,7 +55,7 @@ class ProductController extends Controller
     public function update(Product $product , UpdateProductRequest $request){
         $user = Auth::user();
         if(! $user){
-            return 'عدم دسترسی';
+            return '.عدم دسترسی';
         }
 
         $error = $this->productRepo->update($product , $request);
@@ -60,7 +68,7 @@ class ProductController extends Controller
     public function destroy(Product $product){
         $user = Auth::user();
         if(! $user){
-            return 'عدم دسترسی';
+            return '.عدم دسترسی';
         }
         $error = $this->productRepo->delete($product);
         if ($error === null){
