@@ -6,6 +6,7 @@ use App\Models\Product\Product;
 use Illuminate\Support\Facades\Auth;
 
 class ProductRepository
+//do for restore and Forcedelete
 {
     public function index()
     {
@@ -37,16 +38,19 @@ class ProductRepository
     public function store($request)
     {
         try {
+            $price = $request->is_sale ? ($request->price / $request->discount) : $request->price;
+            $final_price = $request->price - $price;
+
             Product::create([
                 'name' => $request->name,
                 'status' => $request->status,
-                'price' => $request->price,
-                'owner_id' => $request->owner_id ?: Auth::id(),
+                'price' => $final_price,
                 'category_id' => $request->category_id,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image,
-                'is_sale' => $request->is_sale,
+                'is_sale' => $request->is_sale, // YES OR NO
+                'discount' => $request->discount, 
                 'count' => $request->count,
             ]);
         } catch (\Throwable $th) {
@@ -57,17 +61,19 @@ class ProductRepository
     public function update($product, $request)
     {
         try {
-            $pro = $product;
-            $pro->update([
+            $price = $request->is_sale ? ($request->price - $request->discount) : $request->price;
+            $final_price = $request->price - $price;
+
+            $product->update([
                 'name' => $request->name,
                 'status' => $request->status,
-                'price' => $request->price,
-                'owner_id' => $request->owner_id ?: Auth::id(),
+                'price' => $final_price,
                 'category_id' => $request->category_id,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image ? $request->image : null, //agar ersal shod jadid agar na hamoon ghabli
                 'is_sale' => $request->is_sale,
+                'discount' => $request->discount,
                 'count' => $request->count,
             ]);
         } catch (\Throwable $th) {
