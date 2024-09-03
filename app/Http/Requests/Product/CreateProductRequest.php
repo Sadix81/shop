@@ -18,9 +18,9 @@ class CreateProductRequest extends FormRequest
             'is_sale' => ['nullable' , 'integer' , 'min:0' , 'max:1'],
             'discount' => ['nullable' , 'numeric' , 'gt:0'],
             'count' => ['nullable' , 'integer'],
-            'category_id' => ['required' , 'exists:categories,id' , 'integer' , 'gt:0'],
-            // 'category_id' => ['required' , 'array'],
-            // 'category_id.*' => ['required' , 'exists:categories,id' , 'integer'],
+            // 'category_id' => ['required' , 'exists:categories,id' , 'integer' , 'gt:0'],
+            'category_id' => ['required' , 'array'],
+            'category_id.*'  => ['required' , 'exists:categories,id' , 'integer' , 'gt:0'],
         ];
     }
 }
