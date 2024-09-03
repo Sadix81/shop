@@ -38,14 +38,12 @@ class ProductRepository
     public function store($request)
     {
         try {
-            $price = $request->is_sale ? ($request->price / $request->discount) : $request->price;
-            $final_price = $request->price - $price;
+            $final_price = $request->is_sale ? $request->price - ($request->price * ($request->discount / 100)) : $request->price;
 
-            Product::create([
+            $product = Product::create([
                 'name' => $request->name,
                 'status' => $request->status,
                 'price' => $final_price,
-                'category_id' => $request->category_id,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image,
@@ -53,6 +51,9 @@ class ProductRepository
                 'discount' => $request->discount, 
                 'count' => $request->count,
             ]);
+            if($request->has('category_id')){
+                $product->categories->attach($request->category_id);
+            }
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -61,14 +62,12 @@ class ProductRepository
     public function update($product, $request)
     {
         try {
-            $price = $request->is_sale ? ($request->price - $request->discount) : $request->price;
-            $final_price = $request->price - $price;
+            $final_price = $request->is_sale ? $request->price - ($request->price * ($request->discount / 100)) : $request->price;
 
             $product->update([
                 'name' => $request->name,
                 'status' => $request->status,
                 'price' => $final_price,
-                'category_id' => $request->category_id,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image ? $request->image : null, //agar ersal shod jadid agar na hamoon ghabli

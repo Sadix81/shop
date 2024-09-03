@@ -22,6 +22,9 @@ class Product extends Model
         'is_sale',
         'discount',
         'count',
-        'category_id',
     ];
+
+    public function categories(){
+        return $this->belongsToMany(Category::class);
+    }
 }

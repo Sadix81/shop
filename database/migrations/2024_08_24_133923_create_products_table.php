@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->integer('status');
             $table->string('price');
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnUpdate()->cascadeOnDelete();
             $table->text('details')->nullable();
             $table->string('color')->nullable();
             $table->string('image')->nullable();
