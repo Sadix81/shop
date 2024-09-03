@@ -9,7 +9,6 @@ class ProductRepository
 {
     public function index()
     {
-        // filter(paginate , name , price , owner)
         $req = [
             'search' => request()->has('search') ? request('search') : null,
             'mine' => request()->has('mine') ? Auth::id() : false,
@@ -43,6 +42,7 @@ class ProductRepository
                 'status' => $request->status,
                 'price' => $request->price,
                 'owner_id' => $request->owner_id ?: Auth::id(),
+                'category_id' => $request->category_id,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image,
@@ -63,6 +63,7 @@ class ProductRepository
                 'status' => $request->status,
                 'price' => $request->price,
                 'owner_id' => $request->owner_id ?: Auth::id(),
+                'category_id' => $request->category_id,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image ? $request->image : null, //agar ersal shod jadid agar na hamoon ghabli

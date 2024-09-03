@@ -18,6 +18,7 @@ class UpdateProductRequest extends FormRequest
             'image' => ['nullable'],
             'is_sale' => ['nullable', 'integer'],
             'count' => ['nullable', 'integer'],
+            'category_id' => ['required' , 'exists:categories,id' , 'integer']
         ];
     }
 }

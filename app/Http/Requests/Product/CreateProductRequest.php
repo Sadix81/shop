@@ -18,6 +18,9 @@ class CreateProductRequest extends FormRequest
             'image' => ['nullable'],
             'is_sale' => ['nullable' , 'integer'],
             'count' => ['nullable' , 'integer'],
+            'category_id.*' => ['required' , 'exists:categories,id' , 'integer'],
+            // 'category_id' => ['required' , 'array'],
+            // 'category_id.*' => ['required' , 'exists:categories,id' , 'integer'],
         ];
     }
 }
