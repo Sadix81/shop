@@ -52,7 +52,7 @@ class ProductRepository
                 'count' => $request->count,
             ]);
             if($request->has('category_id')){
-                $product->categories->attach($request->category_id);
+                $product->categories()->attach($request->category_id);
             }
         } catch (\Throwable $th) {
             throw $th;
