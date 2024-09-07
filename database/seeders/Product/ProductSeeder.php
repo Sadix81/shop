@@ -60,8 +60,6 @@ class ProductSeeder extends Seeder
             }
             $product['price'] = $final_price;
 
-            $final_price = max(0, $final_price);
-            $product['price'] = $final_price;
 
             $category_ids = $product['category_ids'] ?? []; //if there is any categories_ids it set them , if there is nothing it setting this value to null
             unset($product['category_ids']); // Remove from cerrent array
