@@ -22,22 +22,35 @@ class ProductStoreTest extends TestCase
         $this->token = $loginResponse->json('__token__');
     }
 
-    public function test_product_store(): void
+    public function test_product_store_successfully(): void
     {
         parent::setUp();
         $data = [
-            'name' => 'proc_1',
+            'name' => 'test-1',
             'status' => 1,
-            'price' => 52000,
-            'details' => 'proc_1_details',
-            'color' => 'red',
-            'is_sale' => 54000,
-            'count' => 1212,
+            'price' => 25000,
+            'details' => 'test-1-detailes',
+            'color' => 'black',
+            // 'image' => 'test-1',
+            'is_sale' => 1,
+            'discount' => 15000,
+            'count' => '123',
         ];
+
+        if ($data['is_sale'] && $data['discount'] > 0) {
+            $final_price = $data['price'] - $data['discount'];
+            $final_price = max(0, $final_price);
+        } else {
+            $final_price = $data['price'];
+        }
+        $data['price'] = $final_price;
+        
+
         // Send the request to store the product with the token in the authorization header
          $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('api/product/store', $data);
+        ])->postJson('api/V1/product/store', $data);
+
         $response->assertStatus(201);
     }
 }
