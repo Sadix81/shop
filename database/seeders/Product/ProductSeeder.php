@@ -24,6 +24,7 @@ class ProductSeeder extends Seeder
                 'is_sale' => 1,
                 'discount' => 15000,
                 'count' => '123',
+                'category_ids' => [1, 2],
             ],
             [
                 'name' => 'test-2',
@@ -35,6 +36,7 @@ class ProductSeeder extends Seeder
                 'is_sale' => 0,
                 'discount' => '0',
                 'count' => '123456',
+                'category_ids' => [2, 3],
             ],
             [
                 'name' => 'test-3',
@@ -46,6 +48,7 @@ class ProductSeeder extends Seeder
                 'is_sale' => 1,
                 'discount' => 20000,
                 'count' => '123456789',
+                'category_ids' => [3, 4],
             ]
         ];
         foreach ($products as $product) {
@@ -60,10 +63,14 @@ class ProductSeeder extends Seeder
             $final_price = max(0, $final_price);
             $product['price'] = $final_price;
 
-            Product::firstOrCreate(
-                ['name' => $product['name']], // Unique identifier
-                $product // Other attributes to create
-            );
+            $category_ids = $product['category_ids'] ?? []; //if there is any categories_ids it set them , if there is nothing it setting this value to null
+            unset($product['category_ids']); // Remove from cerrent array
+
+            $createdProduct = Product::firstOrCreate($product);
+
+            if (!empty($category_ids)) {
+                $createdProduct->categories()->attach($category_ids);
+            }
         }
     }
 }
