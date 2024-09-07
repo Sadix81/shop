@@ -3,6 +3,8 @@
 use App\Http\Controllers\V1\Auth\AuthController;
 use App\Http\Controllers\V1\Category\CategoryController;
 use App\Http\Controllers\V1\Product\ProductController;
+use App\Http\Controllers\V1\Profile\ProfileController;
+use App\Http\Controllers\V1\User\Profile\UserProfileUpdateController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth/user')->group(function(){
@@ -11,6 +13,8 @@ Route::prefix('auth/user')->group(function(){
     Route::middleware('auth:api')->group(function(){
         Route::post('/logout' , [AuthController::class , 'logout']);
         Route::get('/get/user' , [AuthController::class , 'getUser']);
+        Route::get('/profile' , [UserProfileUpdateController::class , 'index']);
+        Route::put('/profile/update/{user}' , [UserProfileUpdateController::class , 'update']);
     });
 });
 
