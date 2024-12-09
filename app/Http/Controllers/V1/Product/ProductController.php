@@ -26,8 +26,8 @@ class ProductController extends Controller
 
     public function store(CreateProductRequest $request){
         $user = Auth::user();
-        if(! $user){
-            return '.عدم دسترسی';
+        if (!$user) {
+            return response()->json(['message' => 'Access denied.'], 403);
         }
         if(! $request->is_sale && ($request->discount > 0)){
             return '.محصول شامل تخفیف نمیباشد';
@@ -53,9 +53,17 @@ class ProductController extends Controller
     }
 
     public function update(Product $product , UpdateProductRequest $request){
-        $user = Auth::user();
-        if(! $user){
-            return '.عدم دسترسی';
+         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Access denied.'], 403);
+        }
+
+        if(! $request->is_sale && ($request->discount > 0)){
+            return '.محصول شامل تخفیف نمیباشد';
+        }
+
+        if($request->discount > $request->price){
+            return '.مبلغ وارد شده کمتر از تخفیف است';
         }
 
         $error = $this->productRepo->update($product , $request);
@@ -67,13 +75,30 @@ class ProductController extends Controller
 
     public function destroy(Product $product){
         $user = Auth::user();
-        if(! $user){
-            return '.عدم دسترسی';
+        if (!$user) {
+            return response()->json(['message' => 'Access denied.'], 403);
         }
         $error = $this->productRepo->delete($product);
         if ($error === null){
             return response()->json(['message' => __('product.delete,success')] , 200);
         }
         return response()->json(['message' => __('product.delete,failed')] , 500);
+    }
+
+    public function restore(Product $product){
+
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Access denied.'], 403);
+        }
+
+        if (! $product->trashed()) {
+            return '.عدم دسترسی';
+        } 
+        $error = $this->productRepo->restore($product);
+        if ($error === null){
+            return response()->json(['message' => __('product.restore,success')] , 200);
+        }
+        return response()->json(['message' => __('product.restore,failed')] , 500);
     }
 }

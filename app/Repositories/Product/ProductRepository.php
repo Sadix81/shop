@@ -38,7 +38,7 @@ class ProductRepository
     public function store($request)
     {
         try {
-            $final_price = $request->is_sale ? $request->price - ($request->price * ($request->discount / 100)) : $request->price;
+            $final_price = $request->is_sale ? $request->price - $request->discount : $request->price;
 
             $product = Product::create([
                 'name' => $request->name,
@@ -84,6 +84,18 @@ class ProductRepository
     {
         try {
             $product->delete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function restore($product){
+        try {
+            $product_id = Product::onlyTrashed()->find($product);
+            if(! $product_id){
+                return '.موردی یافت نشد';
+            }
+            $product_id->restore();
         } catch (\Throwable $th) {
             throw $th;
         }

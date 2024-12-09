@@ -24,6 +24,7 @@ Route::prefix('V1/product/')->middleware('auth:api')->group(function(){
     Route::get('/show/{product}' , [ProductController::class , 'show']);
     Route::put('/update/{product}' , [ProductController::class , 'update']);
     Route::delete('/delete/{product}' , [ProductController::class , 'destroy']);
+    Route::post('/restore/{product}' , [ProductController::class , 'restore']);
 });
 
 Route::prefix('V1/category/')->middleware('auth:api')->group(function(){
