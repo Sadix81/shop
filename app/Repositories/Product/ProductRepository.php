@@ -6,6 +6,7 @@ use App\Models\Product\Product;
 use Illuminate\Support\Facades\Auth;
 
 class ProductRepository
+//do for restore and Forcedelete
 {
     public function index()
     {
@@ -37,18 +38,22 @@ class ProductRepository
     public function store($request)
     {
         try {
-            Product::create([
+            $final_price = $request->is_sale ? $request->price - $request->discount : $request->price;
+
+            $product = Product::create([
                 'name' => $request->name,
                 'status' => $request->status,
-                'price' => $request->price,
-                'owner_id' => $request->owner_id ?: Auth::id(),
-                'category_id' => $request->category_id,
+                'price' => $final_price,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image,
-                'is_sale' => $request->is_sale,
+                'is_sale' => $request->is_sale, // YES OR NO
+                'discount' => $request->discount, 
                 'count' => $request->count,
             ]);
+            if($request->has('category_id')){
+                $product->categories()->attach($request->category_id);
+            }
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -57,17 +62,17 @@ class ProductRepository
     public function update($product, $request)
     {
         try {
-            $pro = $product;
-            $pro->update([
+            $final_price = $request->is_sale ? $request->price - ($request->price * ($request->discount / 100)) : $request->price;
+
+            $product->update([
                 'name' => $request->name,
                 'status' => $request->status,
-                'price' => $request->price,
-                'owner_id' => $request->owner_id ?: Auth::id(),
-                'category_id' => $request->category_id,
+                'price' => $final_price,
                 'details' => $request->details,
                 'color' => $request->color,
                 'image' => $request->image ? $request->image : null, //agar ersal shod jadid agar na hamoon ghabli
                 'is_sale' => $request->is_sale,
+                'discount' => $request->discount,
                 'count' => $request->count,
             ]);
         } catch (\Throwable $th) {
@@ -79,6 +84,18 @@ class ProductRepository
     {
         try {
             $product->delete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function restore($product){
+        try {
+            $product_id = Product::onlyTrashed()->find($product);
+            if(! $product_id){
+                return '.موردی یافت نشد';
+            }
+            $product_id->restore();
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('status');
+            $table->integer('status');
             $table->string('price');
-            $table->string('owner_id')->nullable();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnUpdate()->cascadeOnDelete();
             $table->text('details')->nullable();
             $table->string('color')->nullable();
             $table->string('image')->nullable();
-            $table->string('is_sale')->nullable();
+            $table->integer('is_sale')->nullable()->default(0);
+            $table->float('discount')->nullable();
             $table->string('count')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

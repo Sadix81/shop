@@ -11,16 +11,16 @@ class CreateProductRequest extends FormRequest
         return [
             'name' => ['required' , 'string' , 'max:100'],
             'status' => ['required' , 'integer' , 'in:0,1'],
-            'price' => ['required' , 'numeric'],
-            'owner_id' => ['nullable',  'exists:App\Models\User\User,id', 'numeric'],
+            'price' => ['required' , 'integer' , 'min:0'], 
             'details' =>['nullable' , 'string' , 'max:500'],
             'color' => ['nullable' , 'string'],
             'image' => ['nullable'],
-            'is_sale' => ['nullable' , 'integer'],
+            'is_sale' => ['nullable' , 'integer' , 'min:0' , 'max:1'],
+            'discount' => ['nullable' , 'numeric' , 'gt:0'],
             'count' => ['nullable' , 'integer'],
-            'category_id.*' => ['required' , 'exists:categories,id' , 'integer'],
-            // 'category_id' => ['required' , 'array'],
-            // 'category_id.*' => ['required' , 'exists:categories,id' , 'integer'],
+            // 'category_id' => ['required' , 'exists:categories,id' , 'integer' , 'gt:0'],
+            'category_id' => ['required' , 'array'],
+            'category_id.*'  => ['required' , 'exists:categories,id' , 'integer' , 'gt:0'],
         ];
     }
 }
