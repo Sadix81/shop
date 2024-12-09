@@ -24,10 +24,12 @@ class ProductController extends Controller
         return $this->productRepo->index();
     }
 
+    
     public function store(CreateProductRequest $request){
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json(['message' => 'Access denied.'], 403);
+        $user = Auth::id();
+
+        if($user !== 1){
+            return 'عدم دسترسی';
         }
         if(! $request->is_sale && ($request->discount > 0)){
             return '.محصول شامل تخفیف نمیباشد';
@@ -44,6 +46,7 @@ class ProductController extends Controller
         return response()->json(['message' => __('product.create,failed')] , 500);
     }
 
+
     public function show(Product $product){
         $show_product = Product::find($product);
         if(! $show_product){
@@ -52,12 +55,13 @@ class ProductController extends Controller
         return $show_product;
     }
 
-    public function update(Product $product , UpdateProductRequest $request){
-         $user = Auth::user();
-        if (!$user) {
-            return response()->json(['message' => 'Access denied.'], 403);
-        }
 
+    public function update(Product $product , UpdateProductRequest $request){
+        $user = Auth::id();
+
+        if($user !== 1){
+            return 'عدم دسترسی';
+        }
         if(! $request->is_sale && ($request->discount > 0)){
             return '.محصول شامل تخفیف نمیباشد';
         }
@@ -73,10 +77,12 @@ class ProductController extends Controller
         return response()->json(['message' => __('product.update,failed')] , 500);
     }
 
+
     public function destroy(Product $product){
-        $user = Auth::user();
-        if (!$user) {
-            return response()->json(['message' => 'Access denied.'], 403);
+        $user = Auth::id();
+
+        if($user !== 1){
+            return 'عدم دسترسی';
         }
         $error = $this->productRepo->delete($product);
         if ($error === null){
